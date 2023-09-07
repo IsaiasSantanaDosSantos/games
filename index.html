@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Isaiah's games.</title>
+    <link
+      href="https://db.onlinewebfonts.com/c/f389091962d8dab9ec69c5060e2e023c?family=Press+Start+2P"
+      rel="stylesheet"
+    />
+    <!-- Fonta Wesome -->
+    <script
+      src="https://kit.fontawesome.com/c0a50eabc9.js"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="css/index.css" />
+  </head>
+  <body>
+    <div class="game-board">
+      <div class="timeBox">
+        <div class="timeContent">
+          <p class="betterScore">Better Score <br />Isaias 280</p>
+          <p class="timeText">Time</p>
+          <span class="currentlyTime">01:45</span>
+        </div>
+      </div>
+
+      <div class="sky">
+        <img src="img/clouds-1.png" alt="Cloud" class="cloud-1" />
+        <img src="img/clouds-2.png" alt="Cloud" class="cloud-2" />
+      </div>
+      <img src="img/mario-gif.gif" alt="Mario" class="mario" />
+      <img src="img/pipe.png" alt="Pipe" class="pipe" />
+      <img src="img/game-over-text.png" alt="" class="gemeOverText" />
+    </div>
+    <div class="initiallyWindow">
+      <div class="windowContainer">
+        <div class="startGame">
+          <p class="startGameTitle">
+            <span>Wellcome to the</span>
+            <br />
+            Mario Game!
+          </p>
+          <div class="startGameChooseBox">
+            <p class="startGameText"><span class="start">►</span> Start Game</p>
+            <p class="seeScoreBox"><span class="score"></span> See Score</p>
+          </div>
+          <div class="playerNameBox">
+            <p class="pressEnterTxt"></p>
+            <label class="playerLabel"
+              >Your name:
+              <input
+                type="text"
+                id="playerName"
+                class="inputName"
+                maxlength="15"
+                placeholder="Enter your name..."
+              />
+            </label>
+            <span class="errorMsg"></span>
+          </div>
+        </div>
+        <div class="scoreBox">
+          <div class="scoreClosedBox"><p class="">X</p></div>
+
+          <p class="scoreTitle">Ranking better time</p>
+          <div class="rankingBox">
+            <p class="rankingText">
+              <span class="gamerName">Isaias</span
+              ><span class="rankingBar"></span
+              ><span class="gamerScore">584</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="js/index.js"></script>
+  </body>
+</html>
