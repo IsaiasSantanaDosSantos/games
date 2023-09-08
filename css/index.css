@@ -43,13 +43,14 @@ body {
   bottom: 0;
   animation: pipe-animation 1.8s infinite linear;
 }
+
 .mario {
   position: absolute;
   width: 120px;
   bottom: 0;
 }
 .jump {
-  animation: marioJump 500ms infinite ease-out;
+  animation: marioJump 600ms infinite ease-out;
 }
 .gemeOverText {
   position: absolute;
@@ -65,18 +66,20 @@ body {
   animation: gameOveAnimation 3s linear;
 }
 .timeBox {
-  width: 100%;
+  width: 200px;
   text-align: center;
-  position: absolute;
-  top: 100px;
-  left: 0;
-  right: 0;
-  /* display: block; */
-  display: none;
+  /* position: absolute; */
+  /* top: 100px; */
+  /* left: 0; */
+  margin: auto;
+  margin-top: 20px;
+  /* right: 0; */
+  display: block;
+  /* display: none; */
   text-align: center;
 }
 .timeContent {
-  width: 100px;
+  width: auto;
   margin: auto;
   display: flex;
   flex-direction: column;
@@ -88,6 +91,28 @@ body {
   z-index: 10;
   background-color: var(--timeBk);
   backdrop-filter: blur(3px);
+}
+.betterScore {
+  font-size: 10px;
+  line-height: 15px;
+  font-weight: bold;
+  display: flex;
+  flex-flow: column;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.betterScore span {
+  font-size: 8px;
+  display: flex;
+  /* flex-flow: column; */
+  justify-content: space-between;
+  align-items: center;
+}
+.timeText,
+.currentlyTime {
+  font-size: 20px;
+  margin-bottom: 5px;
 }
 .initiallyWindow {
   position: fixed;
@@ -193,6 +218,8 @@ body {
   justify-content: space-between;
   align-items: center;
   position: relative;
+  line-height: 13px;
+  font-size: 10px;
 }
 .gamerName {
   width: auto;
@@ -208,7 +235,7 @@ body {
 }
 .rankingBar {
   position: absolute;
-  bottom: 1px;
+  bottom: 4px;
   left: 0;
   right: 0;
   height: 10px;
@@ -265,7 +292,7 @@ body {
     bottom: 140px;
   }
   50% {
-    bottom: 140px;
+    bottom: 10px;
   }
   60% {
     bottom: 140px;
