@@ -18,25 +18,42 @@ let numberBtn = true;
 let totalSeconds = 0;
 let intervalId;
 let currentlyGamer;
+// Sound variables
+let marioYoshiSound;
+let marioJumpSound;
+// let marioLoseSound;
+// let marioGameOverSound;
+let marioStartGameSound;
+// let marioCoinSound;
+let marioRemixSound;
+// let marioGameWinSound;
 
+let isMarioYoshiIslandSoundPlaying = false;
+const jump = (event) => {
+  if (event.key === 'w' || event.code === 'ArrowUp') {
+    marioJumpSound_start();
+    mario.classList.add('jump');
+    document.removeEventListener('keydown', jump);
+    setTimeout(() => {
+      mario.classList.remove('jump');
+      document.addEventListener('keydown', jump);
+    }, 500);
+  }
+};
 function startGame() {
-  const jump = (event) => {
-    if (event.key === 'w' || event.code === 'ArrowUp') {
-      mario.classList.add('jump');
-
-      setTimeout(() => {
-        mario.classList.remove('jump');
-      }, 500);
-    }
-  };
-
+  document.addEventListener('keydown', jump);
   const loop = setInterval(() => {
     const pipePosition = pipe.offsetLeft;
     const marioPosition = +window
       .getComputedStyle(mario)
       .bottom.replace('px', '');
+    // Test ↓
     // pipe.style.display = 'none';
     if (pipePosition <= 110 && pipePosition > 0 && marioPosition < 71) {
+      document.removeEventListener('keydown', jump);
+      marioJumpSound_stop();
+      marioStartGameSound_stop();
+      marioLoseSound_start();
       clearInterval(intervalId);
       pipe.style.animation = 'none';
       pipe.style.left = `${pipePosition}px`;
@@ -47,38 +64,26 @@ function startGame() {
       mario.src = '/img/game-over.png';
       mario.style.width = '70px';
       mario.style.marginLeft = '38px';
-      gemeOver.classList.add('gameOverZoom');
+      marioGameOverSound_start();
       clearInterval(loop);
-      document.removeEventListener('keydown', jump);
-      console.log(cronometroElement);
-      console.log(nameInput.value);
-
       //LocalStore
-
       let newName = nameInput.value;
       const storedData = JSON.parse(localStorage.getItem('userData')) || [];
 
       const existingDataIndex = storedData.findIndex(
         (data) => data.name === newName
       );
-
       if (existingDataIndex !== -1) {
         storedData[existingDataIndex].score = cronometroElement.textContent;
-        console.log('Usuário velho');
       } else {
         storedData.push({
           name: newName,
           score: cronometroElement.textContent,
         });
-        console.log('Novo usuário');
       }
-
       localStorage.setItem('userData', JSON.stringify(storedData));
-      // currentlyGamer = nameInput.value;
       nameInput.value = '';
-
       // End of LocalStore
-
       setTimeout(() => {
         // pipe.style.left = `${pipePosition}px`;
 
@@ -92,11 +97,9 @@ function startGame() {
 
         // startGame();
         // startAnimation();
-      }, 3000);
+      }, 5000);
     }
   }, 10);
-
-  document.addEventListener('keydown', jump);
 }
 
 function initialEvents() {
@@ -114,7 +117,6 @@ function initialEvents() {
   }
   if (event.key === 'Enter') {
     if (getComputedStyle(startGameOptionBox).display === 'flex') {
-      console.log('=== flex');
       initialBtn.forEach((e) => {
         if (e.textContent === '►') {
           if (e.classList.contains('score')) {
@@ -136,51 +138,56 @@ function initialEvents() {
         }
       });
     } else {
-      console.log('!== flex');
-      nameInput.addEventListener('keydown', (event) => {
-        const regex = /^.{3,15}$/;
-        if (event.key === 'Enter') {
-          if (!regex.test(nameInput.value)) {
-            errorMsg.innerHTML =
-              'The name must contain between 5 and 15 characters';
-            return;
-          } else {
-            // let newName = nameInput.value;
-            // const storedData =
-            //   JSON.parse(localStorage.getItem('userData')) || [];
-            // const existingDataIndex = storedData.findIndex(
-            //   (data) => data.name === newName
-            // );
-            // if (existingDataIndex !== -1) {
-            //   storedData[existingDataIndex].score = '00:15';
-            //   console.log('Usuário velho');
-            // } else {
-            //   storedData.push({ name: newName, score: '00:25' });
-            //   console.log('Novo usuário');
-            // }
-            // localStorage.setItem('userData', JSON.stringify(storedData));
-            // // currentlyGamer = nameInput.value;
-            // nameInput.value = '';
-            // pressEnterTxt.innerHTML =
-            //   'Press <span>"ENTER"</span> to start the game! ';
-            // playerLabel.style.display = 'none';
-            // initiallyWindow.style.display = 'none';
-            //   if (event.key === 'Enter') {
-            //     //   initiallyWindow.style.display = 'none';
-            //     //   setTimeout(() => {
-            // startGame();
-            //     //     pipe.style.display = 'block';
-            //     //     pipe.style.animation = 'pipe-animation 1.8s infinite linear';
-            //     //     mario.style.bottom = '0';
-            //     //     mario.src = '/img/mario-gif.gif';
-            //     //   }, 50);
-            //   }
-          }
-        }
-      });
-      nameInput.addEventListener('input', () => {
-        errorMsg.innerHTML = '';
-      });
+      setTimeout(() => {
+        initialEvents();
+      }, 50);
+      // console.log('!== flex');
+      // nameInput.addEventListener('keydown', (event) => {
+      //   const regex = /^(?!.*\s)[\S]{3,15}$/;
+      //   console.log(regex.test(nameInput.value));
+      //   console.log(nameInput.value);
+      //   if (event.key === 'Enter') {
+      //     if (!regex.test(nameInput.value)) {
+      //       errorMsg.innerHTML =
+      //         'The name must contain between 5 and 15 characters';
+      //       return;
+      //     } else {
+      //       // let newName = nameInput.value;
+      //       // const storedData =
+      //       //   JSON.parse(localStorage.getItem('userData')) || [];
+      //       // const existingDataIndex = storedData.findIndex(
+      //       //   (data) => data.name === newName
+      //       // );
+      //       // if (existingDataIndex !== -1) {
+      //       //   storedData[existingDataIndex].score = '00:15';
+      //       //   console.log('Usuário velho');
+      //       // } else {
+      //       //   storedData.push({ name: newName, score: '00:25' });
+      //       //   console.log('Novo usuário');
+      //       // }
+      //       // localStorage.setItem('userData', JSON.stringify(storedData));
+      //       // // currentlyGamer = nameInput.value;
+      //       // nameInput.value = '';
+      //       // pressEnterTxt.innerHTML =
+      //       //   'Press <span>"ENTER"</span> to start the game! ';
+      //       // playerLabel.style.display = 'none';
+      //       // initiallyWindow.style.display = 'none';
+      //       //   if (event.key === 'Enter') {
+      //       //     //   initiallyWindow.style.display = 'none';
+      //       //     //   setTimeout(() => {
+      //       // startGame();
+      //       //     //     pipe.style.display = 'block';
+      //       //     //     pipe.style.animation = 'pipe-animation 1.8s infinite linear';
+      //       //     //     mario.style.bottom = '0';
+      //       //     //     mario.src = '/img/mario-gif.gif';
+      //       //     //   }, 50);
+      //       //   }
+      //     }
+      //   }
+      // });
+      // nameInput.addEventListener('input', () => {
+      //   errorMsg.innerHTML = '';
+      // });
     }
   }
 
@@ -192,7 +199,7 @@ function initialEvents() {
 
 nameInput.addEventListener('keydown', () => {
   // e.preventDefault();
-  const regex = /^.{3,15}$/;
+  const regex = /^(?!.*\s)[\S]{3,15}$/;
   if (event.key === 'Enter') {
     if (!regex.test(nameInput.value)) {
       errorMsg.innerHTML = 'The name must contain between 5 and 15 characters';
@@ -227,7 +234,9 @@ nameInput.addEventListener('keydown', () => {
           pipe.style.display = 'block';
           pipe.style.animation = 'pipe-animation 1.8s infinite linear';
           mario.style.bottom = '0';
-          mario.src = '/img/mario-gif.gif';
+          marioYoshiIslandSound_stop();
+          marioStartGameSound_start();
+          marioBigImg();
           intervalId = setInterval(updateTimer, 1000);
         }, 50);
       }
@@ -249,7 +258,7 @@ function startAnimation() {
   // pipe.style.animation = 'pipe-animation 1.8s infinite linear';
   mario.style.bottom = '0';
   mario.style.width = '120px';
-  mario.src = '/img/mario-gif.gif';
+  marioBigImg();
   // gemeOver.classList.remove('gameOverZoom');
 }
 
@@ -319,8 +328,109 @@ storedData.forEach((data) => {
 });
 // End of get better time
 
+// Sounds
+// Start music
+
+const marioJumpSound_start = () => {
+  marioJumpSound = new Howl({
+    src: ['/sounds/jump.mp3'],
+  });
+  marioJumpSound.play();
+  return marioJumpSound;
+};
+function marioLoseSound_start() {
+  let sound = new Howl({
+    src: ['/sounds/lose-game.mp3'],
+  });
+  return sound.play();
+}
+function marioGameOverSound_start() {
+  gemeOver.classList.add('gameOverZoom');
+  let sound = new Howl({
+    src: ['/sounds/game-over.mp3'],
+  });
+  return sound.play();
+}
+function marioStartGameSound_start() {
+  if (!marioStartGameSound) {
+    marioStartGameSound = new Howl({
+      src: ['/sounds/start.mp3'],
+    });
+  }
+  marioStartGameSound.play();
+  return marioStartGameSound;
+}
+function marioCoinSound_start() {
+  let sound = new Howl({
+    src: ['/sounds/coin.mp3'],
+  });
+  return sound.play();
+}
+const marioYoshiIslandSound_start = () => {
+  if (!marioYoshiSound) {
+    marioYoshiSound = new Howl({
+      src: ['/sounds/yoshi_island.mp3'],
+      onplay: () => {
+        isMarioYoshiIslandSoundPlaying = true;
+      },
+      onend: () => {
+        isMarioYoshiIslandSoundPlaying = false;
+      },
+    });
+  }
+  marioYoshiSound.play();
+  return marioYoshiSound;
+};
+function marioRemixSound_start() {
+  let sound = new Howl({
+    src: ['/sounds/remix-game.mp3'],
+  });
+  return sound.play();
+}
+function marioGameWinSound_start() {
+  let sound = new Howl({
+    src: ['/sounds/end-of-game.mp3'],
+  });
+  return sound.play();
+}
+// End of music
+const marioYoshiIslandSound_stop = () => {
+  if (marioYoshiSound && marioYoshiSound.playing()) {
+    isMarioYoshiIslandSoundPlaying = false;
+    marioYoshiSound.stop();
+  }
+};
+const marioStartGameSound_stop = () => {
+  if (marioStartGameSound && marioStartGameSound.playing()) {
+    marioStartGameSound.stop();
+  }
+};
+const marioJumpSound_stop = () => {
+  if (marioJumpSound && marioJumpSound.playing()) {
+    marioJumpSound.stop();
+  }
+};
+// End of Sounds
+
+// Mario images
+function marioGameOverImg() {
+  mario.src = '/img/game-over.png';
+  mario.style.width = '70px';
+  mario.style.marginLeft = '38px';
+  return mario;
+}
+function marioCoverImg() {
+  mario.src = '/img/mario-cover-gif.gif';
+  return mario;
+}
+function marioBigImg() {
+  mario.src = '/img/mario-big-gif.gif';
+  return mario;
+}
+// Mario images
 document.addEventListener('DOMContentLoaded', function () {
   pipe.style.display = 'none';
   document.addEventListener('keydown', initialEvents);
   createRanking();
+  marioYoshiIslandSound_start();
 });
